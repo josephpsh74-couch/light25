@@ -1,339 +1,633 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Light 25 학습 심리 진단</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{margin:0;background:#0f0c29;font-family:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;color:#fff;min-height:100vh}
-button{font-family:inherit;cursor:pointer}
-button:active{transform:scale(0.97)!important}
-.bg{min-height:100vh;background:linear-gradient(160deg,#0f0c29 0%,#1a1a3e 30%,#24243e 60%,#1a1a2e 100%);position:relative;overflow:hidden}
-.bg::before,.bg::after{content:'';position:fixed;border-radius:50%;pointer-events:none}
-.bg::before{top:-20%;right:-10%;width:400px;height:400px;background:radial-gradient(circle,rgba(78,205,196,0.06) 0%,transparent 70%)}
-.bg::after{bottom:-15%;left:-10%;width:350px;height:350px;background:radial-gradient(circle,rgba(167,139,250,0.06) 0%,transparent 70%)}
-@keyframes fadeSlideIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px;opacity:0;transform:translateY(30px);transition:all .8s cubic-bezier(.4,0,.2,1)}
-.screen.active{opacity:1;transform:translateY(0)}
-.pill{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;border-radius:50px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);margin-bottom:24px;animation:fadeSlideIn .4s ease}
-.scale-btn{flex:1 1 0;min-width:72px;max-width:100px;padding:20px 8px;border:none;border-radius:16px;font-size:13px;transition:all .25s ease;outline:1px solid rgba(255,255,255,0.08);white-space:pre-line;line-height:1.4;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);font-weight:500}
-.scale-btn.selected{outline:none;font-weight:700;transform:scale(1.05)}
-.result-card{background:rgba(255,255,255,0.04);border-radius:20px;padding:20px;margin-bottom:16px;border:1px solid rgba(255,255,255,0.06)}
-.bar-bg{width:100%;height:6px;background:rgba(255,255,255,0.08);border-radius:3px;margin-bottom:14px}
-.bar-fill{height:100%;border-radius:3px;transition:width 1s ease}
-.coaching-step{display:flex;gap:10px;align-items:flex-start}
-.step-num{min-width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:1px}
-.pattern-box{background:rgba(255,255,255,0.06);border-radius:20px;padding:24px;margin-bottom:20px;border:1px solid rgba(255,255,255,0.08)}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Light Mini · 실행구조 점검</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif;
+      color:#fff;
+      min-height:100vh;
+      background:
+        radial-gradient(900px 600px at 15% 20%, rgba(167,139,250,.28), transparent 55%),
+        radial-gradient(800px 500px at 85% 10%, rgba(78,205,196,.22), transparent 55%),
+        radial-gradient(900px 700px at 60% 85%, rgba(255,107,107,.18), transparent 60%),
+        linear-gradient(160deg,#0b1024 0%, #0f0c29 35%, #141a3a 100%);
+    }
+    a{color:inherit}
+    button{font-family:inherit;cursor:pointer}
+    button:active{transform:scale(.99)}
+    .bg{
+      min-height:100vh;
+      padding:56px 22px;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+    }
+    .wrap{width:100%;max-width:1020px;margin:0 auto}
+    .card{
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:26px;
+      padding:32px;
+      box-shadow:
+        0 30px 80px rgba(0,0,0,.45),
+        inset 0 1px 0 rgba(255,255,255,.06);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+    }
+    .muted{color:rgba(255,255,255,.72)}
+    .tiny{color:rgba(255,255,255,.42);font-size:12px;line-height:1.65}
+    .h1{font-size:40px;font-weight:950;letter-spacing:-1px;line-height:1.15}
+    .h2{font-size:18px;font-weight:900;letter-spacing:-.2px}
+    .sp8{height:8px}.sp12{height:12px}.sp16{height:16px}.sp20{height:20px}.sp28{height:28px}
+
+    .pill{
+      display:inline-flex;gap:10px;align-items:center;
+      padding:10px 14px;border-radius:999px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.07);
+    }
+
+    .cta{
+      width:100%;
+      border:none;
+      border-radius:999px;
+      padding:16px 20px;
+      font-weight:950;
+      font-size:16px;
+      color:#0f0c29;
+      background: linear-gradient(90deg, rgba(255,255,255,1), rgba(255,255,255,.92));
+      box-shadow: 0 14px 40px rgba(0,0,0,.35);
+      transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+    }
+    .cta:hover{transform: translateY(-2px);box-shadow: 0 18px 56px rgba(0,0,0,.42);filter: brightness(1.02);}
+    .cta2{
+      width:100%;
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:999px;
+      padding:14px 18px;
+      font-weight:900;
+      font-size:14px;
+      background:rgba(255,255,255,.07);
+      color:#fff;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease;
+    }
+    .cta2:hover{transform: translateY(-2px);background: rgba(255,255,255,.10);border-color: rgba(255,255,255,.24);}
+
+    .iconbtn{
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.06);
+      color:rgba(255,255,255,.92);
+      border-radius:999px;
+      padding:10px 12px;
+      font-weight:950;
+      font-size:13px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
+      white-space:nowrap;
+    }
+    .iconbtn:hover{transform: translateY(-2px);background: rgba(255,255,255,.10);border-color: rgba(255,255,255,.24);}
+
+    .row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+    .scale{
+      flex:1 1 140px;
+      min-width:140px;
+      border:none;
+      border-radius:18px;
+      padding:16px 12px;
+      background:rgba(255,255,255,.06);
+      color:rgba(255,255,255,.92);
+      border:1px solid rgba(255,255,255,.12);
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
+    }
+    .scale:hover{transform: translateY(-3px);background: rgba(255,255,255,.11);border-color: rgba(255,255,255,.20);}
+    .scale strong{display:block;font-size:20px;font-weight:950}
+    .scale small{display:block;margin-top:8px;color:rgba(255,255,255,.58);white-space:pre-line;line-height:1.25}
+    .scale.selected{
+      background: rgba(255,255,255,.16);
+      border-color: rgba(255,255,255,.30);
+      box-shadow: 0 10px 26px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.10);
+      transform: translateY(-2px);
+    }
+
+    .bar{height:8px;border-radius:999px;background:rgba(255,255,255,.10);overflow:hidden}
+    .fill{height:100%;width:0%;background: linear-gradient(90deg,#FF6B6B,#FFD93D,#4ECDC4,#A78BFA,#F97316);transition: width .38s ease;}
+    .q{font-size:22px;font-weight:950;letter-spacing:-.4px;line-height:1.55;text-align:center;}
+
+    .grid2{display:grid;grid-template-columns:1fr;gap:14px}
+    @media(min-width:840px){.grid2{grid-template-columns:1fr 1fr}}
+
+    .tag{font-size:12px;font-weight:950;padding:7px 10px;border-radius:999px;display:inline-flex;gap:6px;align-items:center;letter-spacing:-.2px;}
+    .tag.ok{background:rgba(78,205,196,.14);border:1px solid rgba(78,205,196,.28);color:#4ECDC4}
+    .tag.mid{background:rgba(255,217,61,.14);border:1px solid rgba(255,217,61,.28);color:#FFD93D}
+    .tag.bad{background:rgba(255,107,107,.14);border:1px solid rgba(255,107,107,.28);color:#FF6B6B}
+
+    .box{padding:14px 14px;border-radius:16px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.10);line-height:1.75;color:rgba(255,255,255,.80);box-shadow: inset 0 1px 0 rgba(255,255,255,.06);}
+
+    .sticky{
+      position:sticky;
+      bottom:0;left:0;right:0;
+      padding:14px 0 6px;
+      background: linear-gradient(180deg, transparent, rgba(11,16,36,.85) 30%, rgba(11,16,36,1));
+      border-radius: 0 0 22px 22px;
+      margin-top: 6px;
+    }
+
+    .headerRow{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+    .headerLeft{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+
+    .toggle{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .switch{
+      width:46px;height:28px;border-radius:999px;
+      background:rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.22);
+      position:relative;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+    }
+    .knob{
+      position:absolute;top:3px;left:3px;
+      width:22px;height:22px;border-radius:50%;
+      background:rgba(255,255,255,.95);
+      transition: transform .18s ease;
+      box-shadow: 0 10px 20px rgba(0,0,0,.35);
+    }
+    .switch.on{background:rgba(78,205,196,.22);border-color:rgba(78,205,196,.35)}
+    .switch.on .knob{transform:translateX(18px)}
+
+    @media(min-width:840px){.h1{font-size:44px}.card{padding:34px}}
+  
+/* ===== Mini 5min Mission (2 cards) ===== */
+.missionWrap{
+  padding:16px;
+  border-radius:14px;
+  background:rgba(17,24,38,.92);
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 18px 50px rgba(0,0,0,.35);
+}
+.missionTitle{
+  font-size:18px;
+  font-weight:800;
+  color:#b9ffd6;
+  margin-bottom:10px;
+  letter-spacing:-0.2px;
+}
+.missionSub{
+  font-size:13px;
+  font-weight:600;
+  color:rgba(255,255,255,.65);
+  margin-left:6px;
+}
+.missionGrid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+}
+@media (min-width: 900px){
+  .missionGrid{ grid-template-columns:1fr 1fr; }
+}
+.missionCard{
+  width:100%;
+  text-align:left;
+  border-radius:12px;
+  padding:14px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.14);
+  color:#eaf0ff;
+  cursor:pointer;
+  transition:transform .12s ease, background .12s ease, border-color .12s ease, box-shadow .12s ease;
+}
+.missionCard:hover{
+  transform:translateY(-1px);
+  background:rgba(255,255,255,.08);
+  border-color:rgba(185,255,214,.35);
+  box-shadow:0 10px 24px rgba(0,0,0,.28);
+}
+.missionCard.selected{
+  background:rgba(34,197,94,.12);
+  border-color:rgba(34,197,94,.55);
+  box-shadow:0 12px 28px rgba(34,197,94,.12), 0 10px 22px rgba(0,0,0,.28);
+}
+.missionHead{
+  font-size:15px;
+  font-weight:900;
+  color:#d7ffe8;
+  margin-bottom:6px;
+}
+.missionText{
+  font-size:14px;
+  font-weight:650;
+  color:rgba(255,255,255,.86);
+  line-height:1.55;
+}
+.missionHint{
+  margin-top:10px;
+  font-size:12.5px;
+  color:rgba(255,255,255,.62);
+}
+
 </style>
 </head>
 <body>
-<div class="bg" id="app"></div>
+  <div class="bg">
+    <div class="wrap" id="app"></div>
+  </div>
+
 <script>
-const S=[
-{id:"A",t:"기질",st:"유혹 / 충동",em:"⚡",c:"#FF6B6B",g:"linear-gradient(135deg,#FF6B6B,#FF8E8E)",q:["공부하려고 앉아도 금방 딴생각이 나거나 다른 행동이 하고 싶어진다.","알림(카톡/유튜브 등)이 오면 확인을 미루기 어렵다.","반복적인 과제(단어 암기/유형 반복)를 할 때 실수가 늘거나 집중이 빨리 떨어진다.","계획은 크게 세우지만, 시작하면 금방 흥미가 식는다.","즉각적인 보상(간식/게임/유튜브)이 없으면 공부가 잘 안 굴러간다."]},
-{id:"B",t:"정서",st:"불안 / 완벽",em:"🌊",c:"#4ECDC4",g:"linear-gradient(135deg,#4ECDC4,#6EE7DE)",q:["완벽하게 준비되지 않으면 시작을 미루고 싶다.","문제를 풀 때 '틀리면 어떡하지?'가 떠올라 손이 멈춘다.","시험이나 평가가 가까워지면 긴장 때문에 집중이 더 어려워진다.","계획을 지나치게 꼼꼼히 세우느라 정작 실행이 늦어진다.","칭찬이나 좋은 결과가 있어도 마음이 편해지지 않고 불안이 남는다."]},
-{id:"C",t:"동기",st:"무기력 / 효능감",em:"🔋",c:"#FFD93D",g:"linear-gradient(135deg,#FFD93D,#FFE566)",q:["'공부해도 달라질 게 없다'는 생각이 자주 든다.","스스로 공부를 시작하기보다, 누가 시켜야 움직이는 편이다.","성적이 올라도 성취감이 크지 않다.","막히면 '나는 원래 안 되는 편'이라고 결론내리기 쉽다.","책상에 앉아도 멍하게 시간만 보내는 날이 있다."]},
-{id:"D",t:"행동",st:"회피 / 미루기",em:"🐌",c:"#A78BFA",g:"linear-gradient(135deg,#A78BFA,#C4B5FD)",q:["공부할 시간이 되면 갑자기 정리/딴청/잡일이 늘어난다.","'5분만 쉬고'가 길어져서 계획이 무너지는 일이 많다.","어려운 과목이나 단원은 계속 뒤로 미룬다.","해야 할 일을 생각하면 답답해서 폰/침대/게임으로 피하고 싶어진다.","계획표를 세워도 3일 이상 유지하기가 어렵다."]},
-{id:"E",t:"전략",st:"인지 비효율",em:"🧩",c:"#F97316",g:"linear-gradient(135deg,#F97316,#FB923C)",q:["읽었는데도 핵심이 남지 않아 '뭘 봤지?'가 된다.","이해보다 암기 위주로만 하다가 금방 잊는다.","내가 무엇을 아는지/모르는지 구분이 잘 안 된다.","오답을 정리하지 않아서 비슷한 실수를 반복한다.","시험에서 시간 배분이 꼬이거나 문제를 잘못 읽는 실수가 잦다."]}
-];
-const SL=[{v:0,l:"전혀\n아니다"},{v:1,l:"가끔\n그렇다"},{v:2,l:"자주\n그렇다"},{v:3,l:"거의 항상\n그렇다"}];
+  const FULL_TEST_URL = "./light25_premium_readable_darkv4.html";
+  const STORAGE_KEY = "LIGHT_MINI_RESULT";
 
-/* ── 영역별 해석 ── */
-const IP={
-A:[
-{lv:"양호",b:"🟢",ti:"집중력 조절이 잘 되고 있어요",d:"유혹이나 충동 앞에서도 자기 조절이 비교적 잘 되는 상태입니다. 외부 자극에 크게 흔들리지 않고 학습에 집중할 수 있는 기질적 안정성을 갖추고 있어요."},
-{lv:"주의",b:"🟡",ti:"자극에 반응하기 쉬운 상태예요",d:"공부를 시작하는 데는 어느 정도 가능하지만, 중간에 자극(알림, 유튜브, SNS 등)이 들어오면 쉽게 이탈하는 패턴이 보입니다. 이것은 의지의 문제가 아니라, 뇌의 보상 시스템이 즉각적 쾌감에 더 민감하게 반응하기 때문이에요."},
-{lv:"관리 필요",b:"🔴",ti:"충동 조절에 상당한 어려움이 있어요",d:"외부 유혹에 대한 저항력이 많이 약해져 있는 상태입니다. 이건 게으름이 아니라, 자극 조절 시스템이 과부하 상태라는 신호입니다. 의지력에 기대기보다 물리적 환경을 재설계하는 것이 우선이에요."}],
-B:[
-{lv:"양호",b:"🟢",ti:"정서적으로 안정된 학습 상태예요",d:"불안이나 완벽주의가 학습을 방해하지 않는 건강한 상태입니다. 실수를 해도 크게 위축되지 않고, 적당한 긴장감을 학습 동력으로 활용할 수 있어요."},
-{lv:"주의",b:"🟡",ti:"불안이 은근히 발목을 잡고 있어요",d:"겉으로는 괜찮아 보여도, 내면에서 완벽하게 해야 해, 틀리면 안 돼라는 목소리가 학습을 방해하고 있을 수 있습니다. 완벽주의가 높은 기준이 아니라 시작을 막는 벽이 되고 있다면, 그 패턴을 인식하는 것이 첫걸음입니다."},
-{lv:"관리 필요",b:"🔴",ti:"불안이 학습을 심각하게 방해하고 있어요",d:"시험 불안, 완벽주의적 미루기, 평가에 대한 과도한 두려움이 학습 전반에 영향을 미치고 있는 상태입니다. 이 수준의 불안은 인지 기능(집중, 기억, 판단)을 실질적으로 저하시킵니다."}],
-C:[
-{lv:"양호",b:"🟢",ti:"내면의 학습 동기가 살아있어요",d:"스스로 공부하려는 의지와 성취에 대한 기대감이 건강하게 유지되고 있습니다. 이런 내적 동기는 외부 보상보다 훨씬 지속력이 강합니다."},
-{lv:"주의",b:"🟡",ti:"동기가 흔들리기 시작하는 시기예요",d:"공부의 이유가 희미해지고 있거나, 해도 안 될 것 같다는 생각이 조금씩 스며들고 있는 상태입니다. 이 상태가 지속되면 학습된 무기력으로 이어질 수 있어요."},
-{lv:"관리 필요",b:"🔴",ti:"동기가 심하게 고갈된 상태예요",d:"학습에 대한 의미감과 효능감이 크게 떨어져 있습니다. 이것은 나태함이 아니라, 반복된 좌절 경험이 만들어낸 심리적 방어 기제입니다."}],
-D:[
-{lv:"양호",b:"🟢",ti:"행동 실행력이 좋은 상태예요",d:"계획을 세우면 실제로 행동으로 옮길 수 있는 실행력을 갖추고 있습니다. 이 실행력은 학습에서 가장 중요한 자산 중 하나입니다."},
-{lv:"주의",b:"🟡",ti:"미루기 패턴이 자리잡기 시작했어요",d:"나중에 해야지가 점점 습관이 되고 있는 상태입니다. 미루기의 핵심은 시간 관리의 문제가 아니라 감정 관리의 문제입니다. 과제가 주는 불쾌한 감정을 피하기 위해 뇌가 자동으로 회피 경로를 선택하는 거예요."},
-{lv:"관리 필요",b:"🔴",ti:"회피 행동이 고착화된 상태예요",d:"해야 할 일을 알면서도 시작하지 못하고, 계획을 세워도 3일을 넘기기 어려운 상태가 반복되고 있습니다. 과제의 크기, 시작의 마찰, 감정적 부담 — 이 세 가지를 줄이는 환경 설계가 필요합니다."}],
-E:[
-{lv:"양호",b:"🟢",ti:"학습 전략이 효율적으로 작동하고 있어요",d:"자신이 무엇을 알고 모르는지 파악하는 메타인지 능력이 잘 작동하고 있습니다. 이런 공부하는 방법을 아는 능력은 장기적으로 가장 큰 차이를 만듭니다."},
-{lv:"주의",b:"🟡",ti:"학습 방법에 비효율이 있어요",d:"열심히 하고 있지만, 투입한 시간 대비 성과가 낮다고 느끼고 있을 수 있습니다. 이것은 노력의 문제가 아니라 방법의 문제일 가능성이 높아요."},
-{lv:"관리 필요",b:"🔴",ti:"학습 전략 전반의 재점검이 필요해요",d:"현재 사용하고 있는 학습법이 효과적으로 작동하지 않고 있습니다. 이 상태는 머리가 나쁜 것이 아니라, 뇌의 작동 방식에 맞지 않는 방법을 쓰고 있다는 신호입니다."}]
-};
+  const SCALE = [
+    {v:0, t:"전혀\ 아니다"},
+    {v:1, t:"가끔\ 그렇다"},
+    {v:2, t:"자주\ 그렇다"},
+    {v:3, t:"거의 항상\ 그렇다"},
+  ];
 
-/* ── 영역별 코칭 ── */
-const CO={
-A:[
-{ti:"🐝 현재 루틴을 유지하세요",st:["지금 하고 있는 집중 방법을 기록해두세요. 나중에 컨디션이 떨어졌을 때 복구 매뉴얼이 됩니다.","새로운 자극(새 앱, 새 SNS)이 들어올 때 24시간 유예 규칙을 적용해보세요."]},
-{ti:"🐝 환경 설계로 집중력을 지켜주세요",st:["스마트폰은 다른 방에. 눈에 보이기만 해도 뇌는 계속 신경을 쓰게 돼요. 시야에서 치우는 것만으로도 놀라울 정도로 집중력이 달라집니다.","충동이 오면 10분만 기다려보세요. 억누르려 하면 더 커져요. 충동은 파도처럼 10분이면 자연스럽게 지나갑니다.","잡생각은 메모지에 주차. 떠오르는 생각을 키워드만 적어두면 뇌가 안심하고 놓아줘요. 쉬는 시간에 꺼내보면 됩니다.","15분 타임어택. \"15분 안에 5문제!\" 짧은 긴박감이 오히려 집중을 도와줘요. 지루함을 게임으로 바꿔보세요."]},
-{ti:"🐝 충동적 꿀벌을 위한 환경 설계",st:["스마트폰은 다른 방에. 눈에 보이기만 해도 뇌는 계속 신경을 쓰게 돼요(인지적 누수). 시야에서 치우는 것만으로도 놀라울 정도로 집중력이 달라집니다.","충동이 오면 10분만 기다려보세요. 억누르려 하면 더 커져요. \"그래, 할 거야. 근데 10분만 있다가.\" 충동은 파도처럼 10분이면 자연스럽게 지나갑니다.","잡생각은 메모지에 주차. 떠오르는 생각을 키워드만 적어두면 뇌가 안심하고 놓아줘요. 쉬는 시간에 꺼내보면 됩니다.","15분 타임어택. \"15분 안에 5문제!\" 짧은 긴박감이 오히려 집중을 도와줘요. 지루함을 게임으로 바꿔보세요."]}],
-B:[
-{ti:"🐹 건강한 긴장감을 유지하세요",st:["시험 전 적당한 긴장은 오히려 집중력을 높여줍니다. 이 상태를 자연스럽게 받아들이세요.","간혹 부담이 느껴질 때를 대비해, 3분 호흡법(들숨 4초 - 멈춤 4초 - 날숨 4초)을 연습해두면 좋아요."]},
-{ti:"🐹 완벽하지 않아도 시작하기 훈련",st:["70점이면 충분해요. 완벽하게 하려다 멈추는 것보다, 조금 부족해도 끝까지 가는 게 훨씬 낫습니다. \"일단 끝까지만 가보자\"를 오늘의 주문으로 삼아보세요.","일부러 엉성하게 시작해보세요. 첫 초안은 엉망이어도 괜찮아요. 백지보다 고칠 거리가 있는 게 100배 낫거든요.","걱정은 예약해두세요. \"저녁 8시에 걱정해 줄게.\" 적어두고 다시 집중하면, 막상 그 시간이 됐을 때 별것 아닌 경우가 대부분이에요."]},
-{ti:"🐹 불안한 햄스터를 위한 갑옷 벗기",st:["70점이면 충분해요. 완벽하게 하려다 멈추는 것보다, 조금 부족해도 끝까지 가는 게 훨씬 낫습니다. \"일단 끝까지만 가보자\"를 오늘의 주문으로 삼아보세요.","일부러 엉성하게 시작해보세요. 첫 초안은 엉망이어도 괜찮아요. 백지보다 고칠 거리가 있는 게 100배 낫거든요.","걱정은 예약해두세요. \"저녁 8시에 걱정해 줄게.\" 적어두고 다시 집중하면, 막상 그 시간이 됐을 때 별것 아닌 경우가 대부분이에요.","불안에게 증거를 요구하세요. \"이번 시험 망쳤다\"는 감정이 들면, 실제로 맞힌 개수를 세어보세요. 불안은 팩트 앞에서 조용해집니다."]}],
-C:[
-{ti:"🦥 내적 동기를 더 강화하세요",st:["지금 공부하는 이유를 한 문장으로 적어 눈에 보이는 곳에 붙여두세요.","주 1회 성장 일지를 작성해보세요: 이번 주에 새로 알게 된 것, 해낸 것을 기록하세요."]},
-{ti:"🦥 작은 성공 경험을 쌓아보세요",st:["말도 안 되게 작은 것부터. '책 펴기', '단어 1개 외우기'처럼 실패할 수 없는 목표를 하나 정해보세요. 그 작은 완료가 멈춰있던 엔진을 다시 켜줍니다.","의욕을 기다리지 마세요. 의욕은 행동 뒤에 따라와요. 기분과 상관없이 몸만 먼저 움직여보세요. 신기하게도 손이 움직이면 마음도 따라옵니다.","\"당장은\"을 붙여보세요. \"나는 못해\" → \"나는 당장은 못해.\" 이 단어 하나가 가능성의 문을 살짝 열어줍니다."]},
-{ti:"🦥 무기력한 나무늘보를 위한 심폐소생술",st:["말도 안 되게 작은 것부터. '책 펴기', '단어 1개 외우기'처럼 실패할 수 없는 목표를 하나 정해보세요. 그 작은 완료가 멈춰있던 엔진을 다시 켜줍니다.","의욕을 기다리지 마세요. 의욕은 행동 뒤에 따라와요. 기분과 상관없이 몸만 먼저 움직여보세요. 신기하게도 손이 움직이면 마음도 따라옵니다.","\"당장은\"을 붙여보세요. \"나는 못해\" → \"나는 당장은 못해.\" 이 단어 하나가 가능성의 문을 살짝 열어줍니다.","원인을 행동에서 찾아보세요. \"내가 부족해서\"가 아니라 \"복습을 안 해서.\" 이렇게 바꾸면 다음에 뭘 하면 되는지가 보이기 시작해요."]}],
-D:[
-{ti:"🐸 실행력을 더 다듬어보세요",st:["지금의 실행 습관을 시스템으로 만들어두세요.","주간 리뷰(일요일 10분)를 추가해보세요."]},
-{ti:"🐸 미루기의 감정적 원인을 다뤄보세요",st:["딱 2분만. \"2분만 하고 그만둘 거야.\" 이렇게 시작하면 대부분 멈추지 않게 돼요. 시작의 문턱을 최대한 낮춰주세요.","기분은 기분일 뿐. \"하기 싫다...라는 생각이 드네. 그래도 손은 움직일 수 있지.\" 감정을 인정하되, 행동은 따로 가도 괜찮아요.","나만의 시작 루틴. 물 한 잔 마시기 → 타이머 켜기 → 앉기. 매일 같은 순서를 반복하면 고민 없이 자연스럽게 시작할 수 있게 됩니다."]},
-{ti:"🐸 미루기 청개구리를 위한 참교육",st:["딱 2분만. \"2분만 하고 그만둘 거야.\" 이렇게 시작하면 대부분 멈추지 않게 돼요. 시작의 문턱을 최대한 낮춰주세요.","기분은 기분일 뿐. \"하기 싫다...라는 생각이 드네. 그래도 손은 움직일 수 있지.\" 감정을 인정하되, 행동은 따로 가도 괜찮아요.","나만의 시작 루틴. 물 한 잔 마시기 → 타이머 켜기 → 앉기. 매일 같은 순서를 반복하면 고민 없이 자연스럽게 시작할 수 있게 됩니다.","내일의 나를 도와주세요. 내일의 나도 똑같이 하기 싫을 거예요. 지금 2분을 선물해주면 내일의 내가 고마워할 거예요."]}],
-E:[
-{ti:"🔨 학습 전략을 더 다듬어보세요",st:["현재 효과적인 학습법을 목록으로 정리해두세요.","주 1회 메타인지 점검을 해보세요."]},
-{ti:"🔨 능동적 학습으로 전환해보세요",st:["읽었으면 덮고 떠올려보세요. 핵심 3가지를 말할 수 있으면 아는 거고, 못하면 모르는 거예요. 이 불편한 과정이 진짜 기억을 만듭니다.","빈 종이 한 장의 힘. 오늘 배운 걸 기억나는 대로 적어보세요. 빠뜨린 부분을 빨간펜으로 채우면, 그게 바로 당신의 진짜 약점 지도예요.","누군가에게 설명해보세요. 쉬운 말로 풀어 설명하다 막히는 부분이 공부해야 할 곳이에요. 막힘 없이 설명할 수 있다면 완전히 내 것이 된 겁니다."]},
-{ti:"🔨 비효율 두더지를 위한 공부 나침반",st:["읽었으면 덮고 떠올려보세요. 핵심 3가지를 말할 수 있으면 아는 거고, 못하면 모르는 거예요. 이 불편한 과정이 진짜 기억을 만듭니다.","빈 종이 한 장의 힘. 오늘 배운 걸 기억나는 대로 적어보세요. 빠뜨린 부분을 빨간펜으로 채우면, 그게 바로 당신의 진짜 약점 지도예요.","누군가에게 설명해보세요. 쉬운 말로 풀어 설명하다 막히는 부분이 공부해야 할 곳이에요. 막힘 없이 설명할 수 있다면 완전히 내 것이 된 겁니다.","잠들기 전 20분이 승부처. 스마트폰 대신 오늘 안 외워진 것을 가볍게 훑어보세요. 자는 동안 뇌가 알아서 정리해줍니다. 가장 편안한 공부법이에요."]}]
-};
+  const SECTIONS = [
+    {id:"A", em:"⚡", title:"충동", qs:[
+      "공부를 시작해도 10~15분 안에 다른 걸 하고 싶어진다.",
+      "폰이 근처에 있으면 집중이 쉽게 깨진다."
+    ]},
+    {id:"B", em:"🌊", title:"불안", qs:[
+      "완벽히 준비되지 않으면 시작이 어렵다.",
+      "시험이나 평가 생각만 해도 긴장된다."
+    ]},
+    {id:"C", em:"🔋", title:"동기", qs:[
+      "공부해도 크게 달라질 것 같지 않다.",
+      "스스로 시작하기보다 누가 시켜야 움직인다."
+    ]},
+    {id:"D", em:"🐌", title:"회피", qs:[
+      "해야 할 시간이 되면 딴 행동이 늘어난다.",
+      "“5분만 쉬자”가 길어지는 일이 많다."
+    ]},
+    {id:"E", em:"🧩", title:"전략", qs:[
+      "읽었는데도 핵심이 잘 남지 않는다.",
+      "오답을 반복하는 편이다."
+    ]},
+  ];
 
-function gi(id,sc){return IP[id][sc<=5?0:sc<=10?1:2]}
-function gc(id,sc){return CO[id][sc<=5?0:sc<=10?1:2]}
+  const app = document.getElementById("app");
 
-/* ── 패턴 자동 분류 ── */
-function detectPattern(scores){
-  const vals=S.map(s=>({id:s.id,t:s.t,em:s.em,sc:scores[s.id]}));
-  const sorted=[...vals].sort((a,b)=>b.sc-a.sc);
-  const hi=sorted[0], hi2=sorted[1], lo=sorted[4];
-  const total=vals.reduce((a,v)=>a+v.sc,0);
-  const highCount=vals.filter(v=>v.sc>=11).length;
-  const midCount=vals.filter(v=>v.sc>=6&&v.sc<=10).length;
-  const allMid=vals.every(v=>v.sc>=5&&v.sc<=10);
-  const spread=hi.sc-lo.sc;
+  let phase = "intro"; // intro | test | result
+  let idx = 0;         // 0..9
+  let answers = {};    // {0:0..3,...}
+  let parentMode = false;
 
-  // 안정적 (총점 0~25)
-  if(total<=25){
-    return{
-      em:"✨",name:"잘 달리는 자전거",sub:"안정적 학습 패턴",
-      desc:"지금 당신의 학습 심리는 잘 정비된 자전거와 같아요. 페달(동기)도 잘 굴러가고, 핸들(전략)도 안정적이며, 브레이크(정서 조절)도 잘 작동하고 있습니다.\n\n5개 영역 모두 큰 어려움 없이 관리되고 있어요. 현재 방식을 유지하되, 상대적으로 점수가 높은 "+hi.em+" "+hi.t+" 영역("+hi.sc+"점)에 약간의 관심을 기울이면 더 완성도 높은 학습이 가능합니다.\n\n🔑 "+lo.em+" "+lo.t+" 영역("+lo.sc+"점)은 큰 강점이니, 이 영역의 습관을 다른 영역에도 확장해보세요.",
-      hi:hi,lo:lo
-    };
+  function totalAnswered(){ return Object.keys(answers).length; }
+  function pct(){
+    // "진행률"은 현재 문항 기준으로 보여주는 게 직관적이라 idx 기반으로 표시
+    return Math.round((idx/10)*100);
   }
 
-  // 적극관리 (총점 51+)
-  if(total>50){
-    return{
-      em:"🆘",name:"안개 속 항해",sub:"적극적 관리가 필요한 상태",
-      desc:"지금은 짙은 안개 속에서 방향을 찾기 어려운 상태와 같아요. 여러 영역에서 동시에 어려움을 경험하고 있어서, 어디서부터 손을 대야 할지 막막하게 느껴질 수 있습니다.\n\n이것은 능력의 문제가 아니라, 심리적·환경적 요인이 복합적으로 작용하고 있다는 신호예요. 안개 속에서 혼자 길을 찾으려 하기보다, 나침반 역할을 해줄 학습 코치나 상담 전문가의 도움을 받는 것을 강하게 권합니다.\n\n🔑 지금 가장 시급한 영역은 "+hi.em+" "+hi.t+"("+hi.sc+"점)이에요. 전문가와 함께 이 영역부터 하나씩 풀어나가면, 생각보다 빠르게 안개가 걷힐 수 있어요.",
-      hi:hi,lo:lo
-    };
+  function levelFromScore(sc){
+    if(sc >= 5) return {k:"고위험", cls:"bad"};
+    if(sc >= 3) return {k:"주의", cls:"mid"};
+    return {k:"안정", cls:"ok"};
   }
 
-  // 중간 범위(26~50): 패턴 분류
-  // 1) 동기+행동 동시 위험 → 마음의 겨울
-  if(scores.C>=11&&scores.D>=11){
-    return{
-      em:"🧊",name:"마음의 겨울",sub:"무기력 고착 패턴",
-      desc:"집중력도 있고, 불안하지도 않고, 공부법도 알고 있어요. 그런데 시작이 안 되죠. 마치 모든 도구가 준비되어 있는데, 몸이 얼어붙은 것처럼.\n\n이건 게으름이 아니에요. 심리학에서는 이것을 '학습된 무기력'이라고 불러요. 반복해서 노력했는데 결과가 안 따라온 경험이 쌓이면, 뇌가 스스로를 보호하기 위해 '어차피 안 돼'라는 결론을 미리 내려버리는 거예요. 매번 문을 밀어도 안 열리면, 어느 순간 문 앞에 가는 것 자체를 포기하게 되는 것처럼요.\n\n지금 상태에서 가장 위험한 것은, 이 무기력을 의지력의 문제로 착각하고 자신을 탓하는 거예요.\n\n🔑 큰 목표는 잠시 내려놓으세요. 교과서 1페이지 읽기, 문제 1개 풀기 — 말도 안 될 정도로 작은 목표를 매일 하나씩 완료하세요. 뇌는 아무리 작은 것이라도 '해냈다'는 경험이 쌓이면, 얼어붙었던 동기 회로가 다시 작동하기 시작합니다. 2주 이상 지속되고 있다면 전문가 상담을 권합니다.",
-      hi:hi,lo:lo
-    };
+  function computeScores(){
+    const scores = {};
+    SECTIONS.forEach((s, si)=>{
+      const a0 = answers[si*2] ?? 0;
+      const a1 = answers[si*2+1] ?? 0;
+      scores[s.id] = a0 + a1; // 0..6
+    });
+    return scores;
   }
 
-  // 2) 기질+정서 동시 위험 → 이중 악순환
-  if(scores.A>=11&&scores.B>=11){
-    return{
-      em:"🌀",name:"불안이 충동을 부르는 시소",sub:"이중 악순환 패턴",
-      desc:"지금 두 가지가 동시에 일어나고 있어요. 한쪽에서는 불안이 '완벽하게 해야 해'라고 압박하고, 다른 쪽에서는 그 압박이 너무 크니까 뇌가 '그냥 유튜브나 보자'며 도망치려 해요.\n\n이 둘은 따로 노는 것 같지만, 실은 시소처럼 연결되어 있어요: 불안이 커지면 → 불쾌함을 피하려고 충동적으로 딴 행동을 하고 → 공부를 못 했다는 죄책감이 → 다시 불안을 키우는 거예요.\n\n좋은 소식은, "+lo.em+" "+lo.t+"("+lo.sc+"점)이 건강하다는 거예요.\n\n🔑 핵심은 순서예요. 먼저 불안을 낮추세요 — 4-7-8 호흡법이나 '최악의 경우를 구체적으로 적어보기'가 효과적이에요. 불안이 한 단계만 내려가도, 충동적 회피가 눈에 띄게 줄어듭니다.",
-      hi:hi,lo:lo
-    };
+  function goBack(){
+    if(phase==="test"){
+      if(idx>0){
+        idx--;
+        render();
+      } else {
+        phase="intro";
+        render();
+      }
+      return;
+    }
+    if(phase==="result"){
+      phase="test";
+      idx = 9;
+      render();
+    }
   }
 
-  // 3) 정서+전략 동시 위험 → 공회전하는 엔진
-  if(scores.B>=11&&scores.E>=11){
-    return{
-      em:"🎯",name:"공회전하는 엔진",sub:"완벽주의 과부하 패턴",
-      desc:"열심히 하고 있어요. 행동력도 있고, 동기도 살아있어요. 그런데 투입한 시간에 비해 결과가 안 나오죠? 마치 엔진은 세게 돌아가는데 바퀴가 헛도는 느낌.\n\n원인은 불안이에요. 불안이 높으면, 뇌의 작업 공간(심리학에서는 '작업 기억'이라고 불러요)이 걱정에 의해 점령당합니다. 컴퓨터에 백그라운드 프로그램이 너무 많이 돌아가면 정작 필요한 작업이 느려지는 것과 같아요.\n\n또 완벽주의가 학습 전략을 비효율적으로 만들고 있을 수 있어요. '확실히 알 때까지' 같은 내용을 반복하거나, 노트를 지나치게 꼼꼼히 만드는 패턴이 여기에 해당합니다.\n\n🔑 전략을 바꾸려 하기 전에, 불안부터 낮추세요. 불안이라는 백그라운드 프로그램을 닫으면, 같은 전략이라도 효율이 확 달라집니다. 엔진은 이미 충분히 좋아요 — 기어만 제대로 물리면 됩니다.",
-      hi:hi,lo:lo
-    };
-  }
-
-  // 4) 한 영역만 11+ → 자극 과민 / 특정 영역 집중
-  if(highCount===1){
-    const danger=vals.find(v=>v.sc>=11);
-    const metaphors={A:{n:"리모컨을 빼앗긴 뇌",s:"자극 과민 패턴"},B:{n:"보이지 않는 브레이크",s:"불안 우세 패턴"},C:{n:"시동이 꺼진 엔진",s:"동기 고갈 패턴"},D:{n:"출발선의 벽",s:"회피 고착 패턴"},E:{n:"지도 없는 여행",s:"전략 부재 패턴"}};
-    const m=metaphors[danger.id];
-    const descs={
-      A:"지금 당신의 뇌는 '자극 자판기' 앞에 서 있는 상태예요. 유튜브, 알림, SNS처럼 즉각적으로 기분이 좋아지는 것들에 뇌의 보상 회로가 과하게 반응하고 있어서, 공부처럼 '나중에 보상이 오는 일'을 선택하는 데 훨씬 많은 에너지가 듭니다.\n\n이건 의지가 약한 게 아니에요. 마치 다이어트 중에 눈앞의 케이크를 거절하는 것과 같아요 — 의지의 문제가 아니라, 케이크가 눈앞에 있는 환경의 문제죠.\n\n🔑 의지력으로 버티려 하지 말고, 유혹 자체를 물리적으로 차단하세요. 환경이 바뀌면 뇌의 선택도 바뀝니다.",
-      B:"겉으로는 괜찮아 보이지만, 마음속에서 보이지 않는 브레이크가 계속 밟히고 있어요. '틀리면 어쩌지', '완벽하지 않으면 시작하지 말자'는 생각이 무의식적으로 학습을 멈추게 하고 있습니다.\n\n불안이 높으면 뇌의 작업 공간이 걱정에 점령당해요. 실력은 있는데 시험만 보면 실수가 느는 것도 이 때문이에요.\n\n🔑 불안은 '없애는 것'이 아니라 '조절하는 것'이에요. 호흡법으로 신체 반응을 먼저 낮추고, '최악의 경우'를 구체적으로 적어보면 막연한 불안이 관리 가능한 크기로 줄어듭니다.",
-      C:"공부해야 한다는 건 아는데, 몸이 움직이지 않아요. 마치 자동차 시동이 꺼진 것처럼, 엑셀을 밟아도 반응이 없는 느낌.\n\n이건 '하기 싫은 것'과는 달라요. 반복된 좌절이 뇌에 '해도 안 돼'라는 학습을 시켜버린 거예요.\n\n🔑 큰 목표 대신 '완료 경험'에 집중하세요. 문제 1개, 1페이지 — 아무리 작아도 '해냈다'는 경험이 시동을 다시 걸어줍니다.",
-      D:"해야 할 일이 있다는 건 알아요. 계획도 세울 수 있어요. 그런데 출발선에 서면 보이지 않는 벽이 느껴져요. 그래서 '일단 정리부터', '5분만 쉬고' 하다가 하루가 지나가죠.\n\n미루기는 시간 관리의 문제가 아니라, 감정 관리의 문제예요. 과제가 주는 불쾌한 감정(지루함, 답답함, 두려움)을 피하기 위해 뇌가 자동으로 우회 경로를 찾는 거예요.\n\n🔑 시작의 허들을 극단적으로 낮추세요. '영어 공부하기'가 아니라 '영어 단어 5개 읽기'. 시작만 하면 관성이 생깁니다.",
-      E:"열심히 공부하고 있는데, 마치 지도 없이 여행하는 것처럼 효율이 안 나오고 있어요. 읽어도 남지 않고, 외워도 금방 잊어버리죠.\n\n이건 머리가 나빠서가 아니에요. 뇌가 정보를 저장하고 꺼내는 방식에 맞지 않는 방법을 쓰고 있다는 뜻이에요.\n\n🔑 가장 효과적인 한 가지: '읽기 → 덮기 → 떠올리기'. 이 인출 연습만 습관화해도 기억 정착률이 2~3배 높아집니다."
-    };
-    return{
-      em:danger.em,name:m.n,sub:m.s,
-      desc:descs[danger.id]+"\n\n다른 영역은 비교적 안정적이어서, "+danger.em+" "+danger.t+" 영역에 집중하면 전체 학습 효율이 크게 개선될 수 있어요.",
-      hi:hi,lo:lo
-    };
-  }
-
-  // 5) 골고루 분산 (모두 주의 수준 or 차이 적음)
-  if(allMid||spread<=5){
-    return{
-      em:"🔋",name:"배터리 잔량 20%",sub:"전반적 에너지 소진 패턴",
-      desc:"특별히 고장 난 부분은 없는데, 모든 게 조금씩 힘든 느낌이죠? 이건 스마트폰 배터리가 20%일 때와 비슷해요. 카메라도 되고 전화도 되지만, 모든 게 느리고 버벅거리는 상태.\n\n심리학에서는 이것을 '자원 소진의 나선'이라고 불러요. 심리적 에너지가 여러 곳에서 조금씩 새고 있어서, 어느 하나를 제대로 회복할 여력이 안 되는 상태입니다.\n\n중요한 건, 이 패턴은 공부 방법이나 습관의 문제가 아니라 기본 컨디션의 문제인 경우가 많아요.\n\n🔑 공부법을 바꾸려 하기 전에, 일단 배터리부터 충전하세요. 수면 시간 확보, 가벼운 운동, 누군가와의 대화 — 이 세 가지가 모든 영역의 회복 속도를 높여줍니다.",
-      hi:hi,lo:lo
-    };
-  }
-
-  // 6) 기본 두 영역 이상 위험 fallback
-  const dangerAreas=vals.filter(v=>v.sc>=11);
-  const dNames=dangerAreas.map(v=>v.em+" "+v.t).join("과 ");
-  return{
-    em:"⚠️",name:"여러 곳에서 새는 지붕",sub:"복합 부담 패턴",
-    desc:"지금은 지붕 여러 곳에서 비가 새고 있는 상태와 비슷해요. "+dNames+" 영역이 동시에 관리 필요 수준이어서, 하나를 고치는 사이 다른 곳에서 문제가 생기는 느낌일 수 있습니다.\n\n여러 영역이 동시에 높을 때는 서로가 서로를 악화시키는 경우가 많아요. 그래서 '가장 영향력이 큰 한 곳'을 먼저 고치는 것이 전략적입니다.\n\n🔑 가장 먼저 다뤄야 할 영역은 "+hi.em+" "+hi.t+"("+hi.sc+"점)이에요. 이 영역이 개선되면 다른 영역도 연쇄적으로 나아지는 경우가 많습니다. "+lo.em+" "+lo.t+"("+lo.sc+"점)은 잘 유지되고 있으니 이 강점을 지렛대로 활용하세요.",
-    hi:hi,lo:lo
-  };
-}
-
-let phase="intro",ans={},cSec=0,cQ=0;
-const app=document.getElementById("app");
-
-function render(){
-  if(phase==="intro") renderIntro();
-  else if(phase==="test") renderTest();
-  else renderResult();
-}
-
-function renderIntro(){
-  app.innerHTML=`<div class="screen" id="scr" style="text-align:center">
-    <div style="font-size:64px;margin-bottom:20px">🧠</div>
-    <h1 style="font-size:32px;font-weight:800;letter-spacing:-0.5px">Light 25</h1>
-    <p style="font-size:18px;color:rgba(255,255,255,0.7);margin-top:8px;font-weight:500">학습 심리 진단</p>
-    <div style="width:60px;height:3px;background:linear-gradient(90deg,#FF6B6B,#4ECDC4);border-radius:2px;margin:24px auto"></div>
-    <p style="font-size:14px;color:rgba(255,255,255,0.5);max-width:320px;line-height:1.7">최근 2주간의 나를 돌아보며<br>25개 문항에 솔직하게 답해주세요.</p>
-    <p style="font-size:13px;color:rgba(255,255,255,0.35);margin-top:8px">소요 시간: 약 3~5분</p>
-    <p style="font-size:10px;color:rgba(255,255,255,0.2);margin-top:12px;max-width:300px;line-height:1.6;text-align:center">본 도구는 교육적 자기점검 목적이며<br>임상적 진단을 대체하지 않습니다.</p>
-    <button onclick="phase='test';render()" style="margin-top:40px;padding:16px 48px;font-size:16px;font-weight:700;color:#1a1a2e;background:#fff;border:none;border-radius:50px;box-shadow:0 4px 24px rgba(255,255,255,0.2)">시작하기</button>
-    <div style="display:flex;gap:8px;margin-top:30px;justify-content:center">${S.map(s=>`<div style="width:8px;height:8px;border-radius:50%;background:${s.c};opacity:0.6"></div>`).join("")}</div>
-  </div>`;
-  setTimeout(()=>document.getElementById("scr").classList.add("active"),50);
-}
-
-function renderTest(){
-  const s=S[cSec],gq=cSec*5+cQ,tot=Object.keys(ans).length,pct=(tot/25*100);
-  app.innerHTML=`<div class="screen active" style="justify-content:flex-start;padding-top:30px">
-    <div style="width:100%;max-width:400px;margin:0 auto">
-      <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;color:rgba(255,255,255,0.6)"><span>${tot}/25</span><span>${Math.round(pct)}%</span></div>
-      <div style="width:100%;height:6px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden"><div style="width:${pct}%;height:100%;background:linear-gradient(90deg,#FF6B6B,#4ECDC4,#FFD93D,#A78BFA,#F97316);border-radius:3px;transition:width .5s"></div></div>
-    </div>
-    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;max-width:500px;margin:0 auto;width:100%">
-      <div class="pill"><span style="font-size:18px">${s.em}</span><span style="font-size:13px;font-weight:600;color:${s.c}">${s.id}. ${s.t}</span><span style="font-size:12px;color:rgba(255,255,255,0.4)">${s.st}</span></div>
-      <div style="font-size:14px;color:rgba(255,255,255,0.35);margin-bottom:12px;font-weight:600">Q${gq+1}</div>
-      <p style="font-size:18px;font-weight:600;text-align:center;line-height:1.7;margin:0 0 40px 0;max-width:440px;animation:fadeSlideIn .5s ease">${s.q[cQ]}</p>
-      <div style="display:flex;gap:12px;width:100%;justify-content:center;flex-wrap:wrap">
-        ${SL.map(sl=>{
-          const sel=ans[gq]===sl.v;
-          return `<button class="scale-btn${sel?' selected':''}" style="${sel?'background:'+s.g+';color:#1a1a2e;box-shadow:0 4px 20px '+s.c+'44':''}" onclick="pickAnswer(${gq},${sl.v})"><div style="font-size:22px;font-weight:800;margin-bottom:6px">${sl.v}</div>${sl.l}</button>`;
-        }).join("")}
-      </div>
-    </div>
-  </div>`;
-}
-
-function pickAnswer(qi,v){
-  ans[qi]=v;
-  setTimeout(()=>{
-    if(cQ<4)cQ++;
-    else if(cSec<4){cSec++;cQ=0;}
-    else phase="result";
+  function restart(){
+    phase="intro";
+    idx=0;
+    answers={};
+    parentMode=false;
     render();
-  },350);
+  }
+
+  function goFull(){
+    const payload = { ts: Date.now(), answers, scores: computeScores(), parentMode };
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(payload)); }catch(e){}
+    window.location.href = FULL_TEST_URL;
+  }
+
+  function pick(v){
+    // 현재 문항 값 덮어쓰기(수정)
+    answers[idx]=v;
+
+    // 다음 문항으로 이동(마지막이면 결과)
+    setTimeout(()=>{
+      if(idx<9){ idx++; render(); }
+      else { phase="result"; render(); }
+    }, 140);
+  }
+
+  function shortExplain(id, sc){
+    const isParent = parentMode;
+    if(id==="A"){
+      if(sc>=5) return isParent
+        ? "자극(폰/알림) 반응이 커서 집중이 끊기기 쉬운 신호입니다. ‘의지’보다 환경(폰 위치/알림)이 먼저입니다."
+        : "자극(폰/알림)에 뇌가 쉽게 끌려가요. 의지보다 환경 설계가 먼저예요.";
+      return isParent
+        ? "자극에 흔들릴 때가 있지만, 환경 조정만으로도 빠르게 개선될 가능성이 큽니다."
+        : "가끔 자극에 끌리지만, 관리하면 금방 좋아질 타입이에요.";
+    }
+    if(id==="B"){
+      if(sc>=5) return isParent
+        ? "긴장/완벽 기준이 시작을 막는 신호입니다. 걱정이 줄면 실제 수행이 올라갈 가능성이 큽니다."
+        : "긴장/완벽 기준이 시작을 막는 신호예요. 불안부터 낮추면 실행이 열려요.";
+      return isParent
+        ? "불안이 살짝 개입할 수 있으나, 루틴(작은 시작/시간 제한)으로 안정화가 가능합니다."
+        : "불안이 살짝 끼지만, 루틴으로 충분히 안정화 가능합니다.";
+    }
+    if(id==="C"){
+      if(sc>=5) return isParent
+        ? "학습 의미감/효능감이 낮아진 신호입니다. ‘작은 완료 경험’부터 다시 쌓는 접근이 좋습니다."
+        : "의미/효능감이 꺼져 있어요. 작은 완료 경험부터 다시 시동 걸어야 해요.";
+      return isParent
+        ? "동기가 흔들리는 단계일 수 있습니다. 목표를 작게 쪼개고 완료를 쌓으면 회복됩니다."
+        : "동기가 흔들리기 시작한 단계예요. 목표를 작게 쪼개면 회복돼요.";
+    }
+    if(id==="D"){
+      if(sc>=5) return isParent
+        ? "회피/미루기가 습관화되는 신호입니다. ‘시작 마찰’을 줄이는 설계(2분 시작/루틴 고정)가 핵심입니다."
+        : "회피가 습관화된 신호예요. ‘2분 시작’ 같은 마찰 감소가 핵심이에요.";
+      return isParent
+        ? "미루기가 늘어나는 신호가 있습니다. 시작 루틴을 고정하면 줄어들 가능성이 큽니다."
+        : "미루기가 늘어나는 중이에요. 시작 루틴을 고정하면 확 줄어들어요.";
+    }
+    if(id==="E"){
+      if(sc>=5) return isParent
+        ? "노력 대비 효율이 낮을 수 있습니다. 오답/인출 중심으로 학습 전략 재설계가 필요합니다."
+        : "노력 대비 효율이 안 나올 수 있어요. 인출/오답 루프로 재설계가 필요해요.";
+      return isParent
+        ? "학습 방법에 비효율 신호가 있습니다. ‘읽고 덮고 떠올리기’부터 추천합니다."
+        : "방법의 비효율 신호가 있어요. ‘읽고 덮고 떠올리기’부터 추천해요.";
+    }
+    return "";
+  }
+
+  function todayMission(topId){
+    const isParent = parentMode;
+    const missions = {
+      A: isParent ? "📌 폰을 다른 방에 두고 15분 타이머 2회만 진행해보세요." : "📌 폰 다른 방 + 15분 타이머 2회만 해보자.",
+      B: isParent ? "📌 시작 전 90초 호흡(4-4-4) 후, ‘대충 70점’ 기준으로 10분만 시작해보세요." : "📌 90초 호흡 후 ‘70점만’ 기준으로 10분 시작.",
+      C: isParent ? "📌 ‘실패할 수 없는 목표’ 1개(문제 1개/단어 3개)를 완료해보세요." : "📌 실패 불가 목표 1개만 완료(문제 1개).",
+      D: isParent ? "📌 ‘2분만’ 시작해서 타이머를 켜고, 끝나면 계속할지 결정하세요." : "📌 ‘2분만’ 시작. 끝나면 계속할지 결정.",
+      E: isParent ? "📌 오늘 본 내용 3가지를 ‘덮고 말하기’로 인출해보세요." : "📌 덮고 핵심 3개 말하기(인출).",
+    };
+    return missions[topId] || (isParent ? "📌 오늘은 10분만 ‘시작’에 집중해보세요." : "📌 오늘은 10분만 ‘시작’.");
+  }
+
+  function render(){
+    if(phase==="intro") return renderIntro();
+    if(phase==="test") return renderTest();
+    return renderResult();
+  }
+
+  function renderIntro(){
+    app.innerHTML = `
+      <div class="card">
+        <div class="pill"><span>🧠</span><span class="h2">Light Mini</span><span class="tiny">· 3분 학습 점검</span></div>
+        <div class="sp16"></div>
+        <div class="h1">공부는 하는데,<br/>왜 성과가 안 날까?</div>
+        <div class="sp12"></div>
+        <div class="muted" style="line-height:1.7">
+          최근 2주 기준 · 10문항으로<br/>
+          집중/불안/동기/미루기/전략을 빠르게 점검해요.
+        </div>
+        <div class="sp16"></div>
+        <div class="tiny">※ 교육적 자기점검 목적이며 임상적 진단을 대체하지 않습니다.</div>
+        <div class="sp20"></div>
+        <button class="cta" onclick="phase='test';render()">무료로 시작하기</button>
+        <div class="sp12"></div>
+        <button class="cta2" onclick="window.location.href = FULL_TEST_URL">정밀 진단(25문항) 바로 보기</button>
+      </div>
+
+      <div class="sp16"></div>
+
+      <div class="card">
+        <div class="toggle">
+          <div>
+            <div class="h2">👨‍👩‍👧 학부모 요약 모드</div>
+            <div class="tiny">부모에게 도움이 되는 표현으로 결과를 보여줍니다.</div>
+          </div>
+          <div class="switch ${parentMode?'on':''}" onclick="parentMode=!parentMode;renderIntro()">
+            <div class="knob"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sp16"></div>
+
+      <div class="card">
+        <div class="h2">Mini는 “방향”만 알려줘요</div>
+        <div class="sp12"></div>
+        <div class="tiny">
+          혼합형(2개 이상 높음)일수록 정밀 분석이 중요합니다.<br/>
+          정밀 진단에서는 <b>Top2 혼합 분석</b> + <b>14일 실행 플랜</b> + <b>부모 가이드</b>를 제공합니다.
+        </div>
+      </div>
+    `;
+  
+    try{ renderMissions(top1.id, top2.id); }catch(e){}
 }
 
-function renderResult(){
-  const scores={};
-  S.forEach((s,si)=>{let sum=0;for(let i=0;i<5;i++)sum+=(ans[si*5+i]||0);scores[s.id]=sum;});
-  const total=Object.values(scores).reduce((a,b)=>a+b,0);
-  const pat=detectPattern(scores);
+  function renderTest(){
+    const section = SECTIONS[Math.floor(idx/2)];
+    const question = section.qs[idx%2];
+    const progress = pct();
+    const selected = answers[idx];
 
-  // 역산 레이더: 15-점수 = 건강도 (높을수록 건강)
-  const sz=280,cn=sz/2,mr=sz/2-40,stp=2*Math.PI/5,sa=-Math.PI/2;
-  const pt=(i,v)=>({x:cn+(v/15)*mr*Math.cos(sa+i*stp),y:cn+(v/15)*mr*Math.sin(sa+i*stp)});
-  const healthScores=S.map(s=>15-scores[s.id]);
-  const pts=healthScores.map((v,i)=>pt(i,v));
-  let svg=`<svg width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}" style="filter:drop-shadow(0 4px 20px rgba(0,0,0,0.1))">`;
-  [0.25,0.5,0.75,1].forEach(lv=>{let p=Array.from({length:5},(_,i)=>{const a=sa+i*stp;return(cn+mr*lv*Math.cos(a))+","+(cn+mr*lv*Math.sin(a));}).join(" ");svg+=`<polygon points="${p}" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>`;});
-  S.forEach((s,i)=>{const a=sa+i*stp;svg+=`<line x1="${cn}" y1="${cn}" x2="${cn+mr*Math.cos(a)}" y2="${cn+mr*Math.sin(a)}" stroke="rgba(255,255,255,0.1)" stroke-width="1"/><text x="${cn+(mr+24)*Math.cos(a)}" y="${cn+(mr+24)*Math.sin(a)}" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="13" font-weight="600">${s.em} ${s.t}</text>`;});
-  // 건강한 영역 = 그라데이션 면적
-  svg+=`<defs><linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4ECDC4" stop-opacity="0.3"/><stop offset="100%" stop-color="#A78BFA" stop-opacity="0.3"/></linearGradient></defs>`;
-  svg+=`<polygon points="${pts.map(p=>p.x+","+p.y).join(" ")}" fill="url(#rg)" stroke="rgba(78,205,196,0.8)" stroke-width="2.5"/>`;
-  pts.forEach((p,i)=>{svg+=`<circle cx="${p.x}" cy="${p.y}" r="5" fill="white" stroke="${S[i].c}" stroke-width="2.5"/>`;});
-  svg+=`</svg>`;
+    app.innerHTML = `
+      <div class="card">
+        <div class="headerRow">
+          <div class="headerLeft">
+            <button class="iconbtn" onclick="goBack()" aria-label="뒤로가기">← 뒤로</button>
+            <div class="pill"><span>${section.em}</span><span class="h2">${section.title}</span><span class="tiny">${idx+1}/10</span></div>
+          </div>
+          <div class="tiny">${progress}%</div>
+        </div>
+        <div class="sp12"></div>
+        <div class="bar"><div class="fill" style="width:${progress}%"></div></div>
 
-  const descHtml=pat.desc.split('\n\n').map(p=>`<p style="margin-bottom:12px">${p}</p>`).join('');
+        <div class="sp28"></div>
+        <div class="q">${question}</div>
+        <div class="sp28"></div>
 
-  let cards=S.map(s=>{
-    const sc=scores[s.id],ip=gi(s.id,sc),co=gc(s.id,sc),pct=((15-sc)/15*100);
-    const icon=ip.lv==="양호"?"✅":ip.lv==="주의"?"⚠️":"🚨";
-    return `<div class="result-card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-        <div style="display:flex;align-items:center;gap:10px"><span style="font-size:22px">${s.em}</span><div><div style="font-size:15px;font-weight:700">${s.id}. ${s.t}</div><div style="font-size:12px;color:rgba(255,255,255,0.4)">${s.st}</div></div></div>
-        <div style="text-align:right"><span style="font-size:12px;margin-right:4px">${ip.b}</span><span style="font-size:13px;font-weight:600;color:${s.c}">${sc}/15</span></div>
+        <div class="row">
+          ${SCALE.map(sc=>`
+            <button class="scale ${selected===sc.v?'selected':''}" onclick="pick(${sc.v})">
+              <strong>${sc.v}</strong>
+              <small>${sc.t}</small>
+            </button>
+          `).join("")}
+        </div>
+
+        <div class="sp16"></div>
+        <div class="tiny">팁: “최근 2주” 기준으로 가장 가까운 답을 선택하세요.</div>
       </div>
-      <div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:${s.g}"></div></div>
-      <div style="font-size:14px;font-weight:700;color:${s.c};margin-bottom:8px;display:flex;align-items:center;gap:6px">${icon} ${ip.ti}</div>
-      <div style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.85;padding:14px 16px;background:rgba(255,255,255,0.03);border-radius:12px;margin-bottom:12px">${ip.d}</div>
-      <div style="padding:16px;background:linear-gradient(135deg,${s.c}08,${s.c}04);border-radius:14px;border:1px solid ${s.c}18">
-        <div style="font-size:13px;font-weight:700;color:${s.c};margin-bottom:10px;display:flex;align-items:center;gap:6px">💡 ${co.ti}</div>
-        <div style="display:flex;flex-direction:column;gap:10px">
-          ${co.st.map((step,idx)=>`<div class="coaching-step"><div class="step-num" style="background:${s.c}20;color:${s.c}">${idx+1}</div><p style="font-size:12.5px;color:rgba(255,255,255,0.6);line-height:1.8;margin:0">${step}</p></div>`).join("")}
+    `;
+  }
+
+  function renderResult(){
+    const scores = computeScores();
+    const arr = SECTIONS.map(s=>({id:s.id, em:s.em, title:s.title, sc:scores[s.id]}));
+    const sorted = [...arr].sort((a,b)=>b.sc-a.sc);
+    const top1 = sorted[0], top2 = sorted[1];
+    const strength = [...arr].sort((a,b)=>a.sc-b.sc)[0];
+
+    const highOrMid = arr.filter(x=>x.sc>=3).length;
+    const mixed = highOrMid>=2;
+
+    function cardHTML(x){
+      const lv = levelFromScore(x.sc);
+      return `
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+            <div>
+              <div class="h2">${x.em} ${x.title}</div>
+              <div class="tiny">${x.sc}/6점</div>
+            </div>
+            <div class="tag ${lv.cls}">● ${lv.k}</div>
+          </div>
+          <div class="sp12"></div>
+          <div class="box">${shortExplain(x.id, x.sc)}</div>
+        </div>
+      `;
+    }
+
+    const mission = todayMission(top1.id);
+
+    app.innerHTML = `
+      <div class="card">
+        <div class="pill"><span>✅</span><span class="h2">Mini 결과</span><span class="tiny">· 경향 신호</span></div>
+        <div class="sp16"></div>
+
+        <div class="h1">${mixed ? "⚠ 혼합 신호가 보여요" : "✅ 한 영역이 핵심이에요"}</div>
+        <div class="sp12"></div>
+        <div class="muted" style="line-height:1.7">
+          ${mixed
+            ? `현재는 <b>${top1.em} ${top1.title}</b> + <b>${top2.em} ${top2.title}</b>가 함께 작동하는 패턴일 가능성이 있어요.`
+            : `현재는 <b>${top1.em} ${top1.title}</b>가 우선 개선 포인트로 보여요.`
+          }
+        </div>
+
+        <div class="sp16"></div>
+        <div class="grid2">
+          ${cardHTML(top1)}
+          ${cardHTML(top2)}
+        </div>
+
+        <div class="sp16"></div>
+        <div class="card" style="background:rgba(78,205,196,.06);border-color:rgba(78,205,196,.18)">
+          <div class="h2">💪 강점 영역</div>
+          <div class="sp12"></div>
+          <div class="box">
+            <b>${strength.em} ${strength.title}</b> 영역은 비교적 안정적이에요( ${strength.sc}/6 ).
+            ${parentMode ? "강점은 유지하고, 나머지는 시스템(환경/루틴)으로 끌어올리면 됩니다." : "강점은 유지하고, 나머지는 시스템으로 끌어올리면 됩니다."}
+          </div>
+          <div class="sp12"></div>
+          <div class="tiny">📌 학부모 참고: 2개 이상 ‘주의/고위험’이면 정밀 진단을 권장합니다.</div>
+        </div>
+
+        <div class="sp16"></div>
+        <div id="missionBox"></div>
+
+        <div class="sp16"></div>
+        <div class="box">
+          <b>Mini는 방향만 보여줍니다.</b><br/>
+          정밀 진단에서는 <b>Top2 혼합 분석</b> + <b>14일 실행 플랜</b> + <b>부모 가이드</b>를 제공합니다.
+        </div>
+
+        <div class="sticky">
+          <button class="cta" onclick="goFull()">정밀 진단 받기 (5~7분)</button>
+          <div class="sp12"></div>
+          <button class="cta2" onclick="goBack()">답변 수정하기</button>
+          <div class="sp12"></div>
+          <button class="cta2" onclick="restart()">다시 해보기</button>
+          <div class="sp12"></div>
+          <div class="tiny">※ 정밀 진단은 더 정확한 구조 분석을 위해 문항 수가 늘어납니다.</div>
         </div>
       </div>
-    </div>`;
-  }).join("");
+    `;
+  }
 
-  app.innerHTML=`<div class="screen" id="scr" style="justify-content:flex-start;padding-top:30px;align-items:stretch">
-    <div style="max-width:500px;margin:0 auto;width:100%">
-      <div style="text-align:center;margin-bottom:30px">
-        <div style="font-size:48px;margin-bottom:12px">${pat.em}</div>
-        <h2 style="font-size:22px;font-weight:800;margin:0;color:rgba(255,255,255,0.9)">"${pat.name}"</h2>
-        <p style="font-size:15px;color:rgba(255,255,255,0.5);margin-top:6px;font-weight:500">${pat.sub}</p>
-        <p style="font-size:13px;color:rgba(255,255,255,0.35);margin-top:4px">총점: ${total} / 75</p>
-      </div>
+  render();
 
-      <div style="display:flex;justify-content:center;margin-bottom:8px;background:rgba(255,255,255,0.04);border-radius:24px;padding:20px;border:1px solid rgba(255,255,255,0.06)">
-        ${svg}
-      </div>
-      <p style="text-align:center;font-size:11px;color:rgba(255,255,255,0.3);margin-bottom:20px">※ 면적이 넓을수록 건강한 학습 상태입니다</p>
+// ===== 5분 미션(2개 중 선택) : Top1/Top2 기반 =====
+function missionFor(typeKey){
+  const map = {
+    "충동": {title:"⚡ 충동 · 5분 몰입 시작", text:"휴대폰을 다른 방에 두고 타이머 5분을 설정하세요. 한 문제만 끝까지 푸는 데 집중해보세요."},
+    "회피": {title:"🐌 회피 · 시작 마찰 제거", text:"첫 5분에 풀 문제 3개를 미리 표시해두세요. 타이머 5분 동안은 그 문제만 붙잡아보세요."},
+    "불안": {title:"🌊 불안 · 기준 낮추고 완료", text:"가장 쉬운 문제 1개를 고르세요. 5분 동안은 ‘완벽’이 아니라 ‘끝까지’만 목표로 해보세요."},
+    "전략": {title:"🧩 전략 · 2줄 복기", text:"오늘 틀린 문제 하나를 골라 ‘왜 틀렸는지’를 2줄로 적어보세요. 정답은 마지막에만 확인하세요."},
+    "동기": {title:"🔥 동기 · 성취감 점화", text:"가장 짧은 단원 하나를 고르고, 5분 동안 ‘아는 것 3가지’를 적어보세요."}
+  };
+  return map[typeKey] || {title:"✅ 기본 · 5분 시작", text:"타이머 5분을 켜고, 가장 쉬운 문제 1개를 끝까지 풀어보세요."};
+}
 
-      <div class="pattern-box">
-        <div style="font-size:13px;font-weight:700;color:rgba(255,255,255,0.5);margin-bottom:12px">📋 나의 학습 심리 분석</div>
-        <div style="font-size:14px;color:rgba(255,255,255,0.75);line-height:1.9">${descHtml}</div>
-      </div>
+function renderMissions(primaryKey, secondaryKey){
+  const container = document.getElementById("missionBox");
+  if(!container) return;
 
-      <div style="display:flex;gap:10px;margin-bottom:24px">
-        <div style="flex:1;background:rgba(78,205,196,0.08);border-radius:14px;padding:14px;border:1px solid rgba(78,205,196,0.15)">
-          <div style="font-size:11px;font-weight:700;color:#4ECDC4;margin-bottom:6px">💪 가장 안정적인 영역</div>
-          <div style="font-size:15px;font-weight:700">${pat.lo.em} ${pat.lo.t}</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:2px">${pat.lo.sc}점 / 15점</div>
+  const m1 = missionFor(primaryKey);
+  const m2 = (secondaryKey && secondaryKey !== primaryKey)
+    ? missionFor(secondaryKey)
+    : {title:"✅ 보완 · 5분 유지", text:"타이머 5분을 켜고, 방금 푼 내용을 스스로 2문장으로 설명해보세요."};
+
+  container.innerHTML = `
+    <div class="card">
+      <div class="h2">🎯 오늘의 5분 미션 <span class="tiny" style="opacity:.7">· 둘 중 하나만 선택</span></div>
+      <div class="sp12"></div>
+      <div class="missionWrap">
+        <div class="missionTitle">둘 중 하나만 선택해서 오늘 바로 해보세요</div>
+        <div class="missionGrid">
+          <button class="missionCard selected" type="button" data-m="0">
+            <div class="missionHead">${m1.title}</div>
+            <div class="missionText">${m1.text}</div>
+          </button>
+          <button class="missionCard" type="button" data-m="1">
+            <div class="missionHead">${m2.title}</div>
+            <div class="missionText">${m2.text}</div>
+          </button>
         </div>
-        <div style="flex:1;background:rgba(255,107,107,0.08);border-radius:14px;padding:14px;border:1px solid rgba(255,107,107,0.15)">
-          <div style="font-size:11px;font-weight:700;color:#FF6B6B;margin-bottom:6px">🎯 우선 개선 영역</div>
-          <div style="font-size:15px;font-weight:700">${pat.hi.em} ${pat.hi.t}</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:2px">${pat.hi.sc}점 / 15점</div>
-        </div>
-      </div>
-
-      ${cards}
-
-      <div style="text-align:center;padding:30px 0 40px">
-        <button onclick="ans={};cSec=0;cQ=0;phase='intro';render()" style="padding:14px 40px;font-size:15px;font-weight:700;color:#fff;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:50px">다시 검사하기</button>
-        <p style="font-size:11px;color:rgba(255,255,255,0.25);margin-top:16px">&copy; 2026 Light 25 학습 심리 진단 &middot; Counseling &amp; Coaching Center</p>
-        <div style="margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.03);border-radius:12px;border:1px solid rgba(255,255,255,0.06);text-align:left">
-          <p style="font-size:10px;color:rgba(255,255,255,0.3);line-height:1.8;margin:0">
-            <strong style="color:rgba(255,255,255,0.4)">안내사항</strong><br>
-            본 도구는 의학적·임상적 진단을 목적으로 하지 않는 교육적 자기점검 도구입니다. 검사 결과는 학습 습관 개선을 위한 참고 자료이며, 정신건강 관련 진단이나 치료를 대체하지 않습니다. 지속적인 심리적 어려움이 있을 경우, 반드시 정신건강의학과 전문의 또는 공인된 상담 전문가와 상의하시기 바랍니다.<br><br>
-            본 콘텐츠(문항, 해석 체계, 패턴 분류, 코칭 조언)에 대한 저작권은 개발자에게 있으며, 무단 복제·배포·상업적 이용을 금합니다.
-          </p>
-        </div>
+        <div class="missionHint">✔ 5분만 해도 실행 흐름이 달라질 수 있어요.</div>
       </div>
     </div>
-  </div>`;
-  setTimeout(()=>document.getElementById("scr").classList.add("active"),50);
+  `;
+
+  container.querySelectorAll(".missionCard").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      container.querySelectorAll(".missionCard").forEach(b=>b.classList.remove("selected"));
+      btn.classList.add("selected");
+    });
+  });
 }
 
-render();
 </script>
 </body>
 </html>
